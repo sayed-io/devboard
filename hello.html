@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DevBoard | Task Tracker</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: Arial, sans-serif;
+      min-height: 100vh;
+      color: #fff;
+      background: linear-gradient(135deg, #6d28d9, #a78bfa, #312e81);
+      padding: 40px 20px;
+    }
+    .container { max-width: 900px; margin: auto; }
+    header { display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 35px; }
+    h1 { font-size: 28px; }
+    header p { color: #ede9fe; margin-top: 6px; }
+    .add {
+      background: #fff; color: #6d28d9; border: 0;
+      padding: 12px 18px; border-radius: 10px;
+      cursor: pointer; font-weight: bold;
+    }
+    .stats { display: flex; gap: 15px; margin-bottom: 25px; }
+    .stat, .task {
+      background: rgba(255,255,255,.13);
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 14px; padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    .stat { flex: 1; }
+    .stat h2 { font-size: 26px; margin-bottom: 5px; }
+    .stat p, .task p { color: #ede9fe; font-size: 14px; }
+    .tasks { display: grid; grid-template-columns: repeat(auto-fit,
+      minmax(230px, 1fr)); gap: 15px; }
+    .task h3 { margin: 15px 0 8px; }
+    .tag { font-size: 12px; background: #ddd6fe; color: #5b21b6;
+      padding: 5px 9px; border-radius: 20px; }
+    .task button { margin-top: 18px; padding: 8px 12px;
+      border: 0; border-radius: 8px; cursor: pointer; }
+    @media(max-width: 500px) {
+      header { align-items: flex-start; gap: 12px; }
+      .stats { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <header>
+      <div>
+        <h1>✦ DevBoard</h1>
+        <p>Your code. Your tasks. Your progress.</p>
+      </div>
+      <button class="add" onclick="addTask()">+ New Task</button>
+    </header>
+
+    <section class="stats">
+      <div class="stat"><h2 id="total">3</h2><p>Total Tasks</p></div>
+      <div class="stat"><h2 id="done">1</h2><p>Completed</p></div>
+      <div class="stat"><h2 id="pending">2</h2><p>In Progress</p></div>
+    </section>
+
+    <section class="tasks" id="tasks">
+      <article class="task">
+        <span class="tag">Frontend</span>
+        <h3>Build login page</h3>
+        <p>Create a responsive login interface.</p>
+        <button onclick="complete(this)">Mark Complete</button>
+      </article>
+      <article class="task">
+        <span class="tag">Backend</span>
+        <h3>Setup API routes</h3>
+        <p>Implement authentication endpoints.</p>
+        <button onclick="complete(this)">Mark Complete</button>
+      </article>
+      <article class="task">
+        <span class="tag">Testing</span>
+        <h3>Fix UI bugs</h3>
+        <p>Review and resolve layout issues.</p>
+        <button onclick="complete(this)">Mark Complete</button>
+      </article>
+    </section>
+  </main>
+
+  <script>
+    function updateStats() {
+      const tasks = document.querySelectorAll('.task');
+      const done = document.querySelectorAll('.task button:disabled').length;
+      document.getElementById('total').textContent = tasks.length;
+      document.getElementById('done').textContent = done;
+      document.getElementById('pending').textContent = tasks.length - done;
+    }
+
+    function complete(button) {
+      button.textContent = '✓ Completed';
+      button.disabled = true;
+      button.style.opacity = '.7';
+      updateStats();
+    }
+
+    function addTask() {
+      const name = prompt('Enter your task name:');
+      if (!name || !name.trim()) return;
+      const task = document.createElement('article');
+      task.className = 'task';
+      const tag = document.createElement('span');
+      tag.className = 'tag';
+      tag.textContent = 'New Task';
+      const title = document.createElement('h3');
+      title.textContent = name.trim();
+      const description = document.createElement('p');
+      description.textContent = 'Ready to get started.';
+      const button = document.createElement('button');
+      button.textContent = 'Mark Complete';
+      button.onclick = () => complete(button);
+      task.append(tag, title, description, button);
+      document.getElementById('tasks').appendChild(task);
+      updateStats();
+    }
+    updateStats();
+  </script>
+</body>
+</html>
+
