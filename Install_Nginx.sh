@@ -12,4 +12,9 @@ sudo ststemctl enable nginx
 echo "================================================="
 echo "------------NGINX IS INSTALLED & ENABLED---------"
 echo "================================================="
-cp 
+ 
+cp hello.html /var/www/html 
+
+sudo systemctl restart nginx
+echo "..DeVBoard is Running on Port 80.. "
+
